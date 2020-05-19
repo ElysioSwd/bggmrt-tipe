@@ -1,0 +1,160 @@
+%Définition du type de document ainsi que de la langue%
+\documentclass[12pt]{report}
+\usepackage[top= 4cm, bottom=4cm, left=2cm, right=2cm, a4paper]{geometry}
+\usepackage{luatextra}
+\usepackage[french]{babel}
+
+%Def titre auteur date%
+\title{TIPE - Anticipation des phénomènes \\météorologiques en mer}
+\author{Julien \textsc{Brohan} - Théo \textsc{Gandy} - Eyal \textsc{Gros} \\ Louis \textsc{Maley} -
+Mattéo \textsc{Riedinger} - Matthieu \textsc{Touré}}
+\date{Juin 2019}
+
+%Paramètres pour la mise en forme de la table des matières, et la création de liens%
+\usepackage{hyperref}
+\usepackage{url}
+\renewcommand{\thesection}{\Roman{section})}
+\renewcommand{\thesubsection}{~~\Roman{section}-\arabic{subsection})}
+\renewcommand{\baselinestretch}{1.12}
+
+%Apport du paquet pour la création d'équations%
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+%Apport des paquets pour la création de tableaux%
+\usepackage{hhline}
+\usepackage{multirow}
+\usepackage{caption}
+
+%Paquets nécessaire à la personnalisation des en-têtes/pieds de page%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{lastpage}
+
+%Apport du paquet pour l'ajout de couleurs%
+\usepackage{color}
+
+%Apport du paquet pour l'ajout de code en langage C%
+\usepackage{listings}
+\lstset{language=C}
+
+%Appel des commandes pour faciliter la mise en forme des en-têtes/pieds de page%
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+%Personnalisation des en-têtes%
+\fancyhead[L]{}
+\fancyhead[C]{\thetitle}
+\fancyhead[R]{}
+
+%Personnalisation des pieds de page%
+\fancyfoot[L]{}
+\fancyfoot[C]{\thedate}
+\fancyfoot[R]{\thepage /\pageref{LastPage}}
+
+%Définition de la largeur des en-têtes/pieds de page%
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+
+
+%DÉBUT DU DOCUMENT ICI%
+
+\begin{document}
+
+\maketitle
+\setcounter{page}{0}
+\tableofcontents
+\thispagestyle{empty}
+\clearpage
+
+\section*{Introduction}
+
+    Les tempêtes en milieu maritime sont les plus grandes menaces pour les bateaux de tous types. 
+    En effet, une fois pris dans une tempête il est impossible d’en sortir par soi-même. 
+    Les tempêtes représentent la première cause de perte de marchandise en mer allant de simples 
+    pertes de conteneurs mal attachés, au naufrage du bateau en question. 
+    Selon le World Shipping Council, le nombre de conteneurs perdus en mer varie entre 2 600 et 10 000
+    chaque année, c’est à dire entre 7 et 27 par jour et peut-être même plus puisque la déclaration des
+    conteneurs perdus n’est pas obligatoire.\\
+
+
+    Ils y a très peu d’accidents graves de plaisanciers suite à des conditions météorologiques compliquées. Cependant, naviguer dans de bonnes conditions est un confort et bien que certains sites / applications fournissent de très bonnes données, recalculer une trajectoire en prenant en compte ces données se fait souvent manuellement. 
+    Pour une navigation dans de bonnes conditions il est donc impératif d’être bien préparé face aux
+    intempéries et un accès facile tout public à ces informations est nécessaire. De plus, en cas de
+    prévisions météorologiques fausses il est important de pouvoir avertir les autres navigateurs, le plus rapidement possible.\\
+    Voici les principaux phénomènes météorologiques à risques rencontrés en mer :\\
+
+
+    \begin{itemize}
+        \item Le vent ressenti localement à proximité du bateau qui peut avoir pour origine les grandes masses d'air océaniques et continentales (vent synoptique) et/ou une origine locale due au relief et à l'ensoleillement (brise).
+        \item La houle créée par un vent (synoptique), dont on arrive à posséder des informations précises.
+        \item La mer du vent levée par un vent local (comme la brise) qui peut changer brutalement et dont les prévisions sont moins précises.
+        \item Les orages en mer, difficiles à prévoir, apparaissant souvent en fin d'après-midi. Ils sont accompagnés de fortes rafales de vent changeant et de grains réduisant la visibilité.
+        \item La brume (visibilité réduite) qui peut se former rapidement et insidieusement à tout moment du jour et de la nuit au-dessus de la mer.\\
+    \end{itemize}
+
+
+    Existerait-t-il donc un moyen permettant aux navigateurs d’être averti en temps réel des intempéries avec une possibilité de signaler par la même occasion, d’éventuelles prévisions erronées ?\\
+
+    %====================== PLAN A INSÉRER AU FUR ET A MESURE ==========================%
+    Dans un premier temps, nous définirons les différentes données dont nous avons besoin, et quelles sont leurs spécificités.
+
+    \clearpage
+
+%===================== PREMIÈRE PARTIE : DONNÉES ( TITRE À DÉFINIR ) =====================%
+\section{Données météorologiques}
+
+    %------------TEMPÊTES------------%
+    \subsection{Les différentes intempéries}
+
+        Les tempêtes sont des phénomènes météorologiques récurrents et présent partout sur le globe.
+
+
+    %-----------Types de données----------%
+    \subsection{Quelles données prendre, sous quelle forme}
+    
+        Plusieurs types de données sont nécessaires afin d'établir une prédiction météorologique. Il faut des mesures de température, de vitesse du vent et de pression atmosphérique.
+     
+
+%======================= LIENS =======================%
+    \newpage
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+
+    \bibitem{Sources de donnees meteo-oceaniques:}
+    Sources de donnees meteo-oceaniques\\
+    \url{https://archimer.ifremer.fr/doc/1992/rapport-988.pdf}\\
+
+    \bibitem{source possible pour carte 1:}
+    source possible pour carte 1:\\
+    \url{https://www.bbc.com/weather/map }    \\
+
+    \bibitem{source possible pour carte 2:}
+    source possible pour carte 2:\\
+    \url{https://www.ventusky.com/?p=10;-169;1&l=temperature-2m} \\
+
+    \bibitem{openweathermap = map ultra cool mais pas facile :}
+    openweathermap = map ultra cool mais pas facile :\\
+    \url{https://home.openweathermap.org/} \\
+    \url{https://openweathermap.org/api/weather-map-2}\\
+
+    \bibitem{source possible pourtempêtes}
+    source possible pour tempêtes :\\
+    \url{https://ocean.si.edu/planet-ocean/waves-storms-tsunamis/hurricanes-typhoons-and-cyclones}\\
+
+    \bibitem{data utilisée pour la météo:}
+    data utilisée pour la météo:\\
+    \url{https://courses.lumenlearning.com/geophysical/chapter/collecting-weather-data/}\\
+
+
+    \bibitem{étapes des prévisions:}
+    étapes des prévisions:\\
+    \url{http://www.meteofrance.fr/prevoir-le-temps/la-prevision-du-temps/les-etapes-de-prevision}\\
+
+\end{thebibliography}
+\end{document}
