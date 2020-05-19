@@ -1,0 +1,239 @@
+%Définition du type de document ainsi que de la langue%
+\documentclass[12pt]{report}
+\usepackage[top= 4cm, bottom=4cm, left=2cm, right=2cm, a4paper]{geometry}
+\usepackage{luatextra}
+\usepackage[french]{babel}
+
+%Def titre auteur date%
+\title{TIPE - Anticipation des phénomènes \\météorologiques en mer}
+\author{Julien \textsc{Brohan} - Théo \textsc{Gandy} - Eyal \textsc{Gros} \\ Louis \textsc{Maley} -
+Mattéo \textsc{Riedinger} - Matthieu \textsc{Touré}}
+\date{Juin 2019}
+
+%Paramètres pour la mise en forme de la table des matières, et la création de liens%
+\usepackage{hyperref}
+\usepackage{url}
+\renewcommand{\thesection}{\Roman{section})}
+\renewcommand{\thesubsection}{~~\Roman{section}-\arabic{subsection})}
+\renewcommand{\baselinestretch}{1.12}
+
+%Apport du paquet pour la création d'équations%
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+%Apport des paquets pour la création de tableaux%
+\usepackage{hhline}
+\usepackage{multirow}
+\usepackage{caption}
+
+%Paquets nécessaire à la personnalisation des en-têtes/pieds de page%
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{lastpage}
+
+%Apport du paquet pour l'ajout de couleurs%
+\usepackage{color}
+
+%Apport du paquet pour l'ajout de code en langage C%
+\usepackage{listings}
+\lstset{language=C}
+
+%Appel des commandes pour faciliter la mise en forme des en-têtes/pieds de page%
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+
+%Personnalisation des en-têtes%
+\fancyhead[L]{}
+\fancyhead[C]{\thetitle}
+\fancyhead[R]{}
+
+%Personnalisation des pieds de page%
+\fancyfoot[L]{}
+\fancyfoot[C]{\thedate}
+\fancyfoot[R]{\thepage /\pageref{LastPage}}
+
+%Définition de la largeur des en-têtes/pieds de page%
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+
+
+%DÉBUT DU DOCUMENT ICI%
+
+\begin{document}
+
+\maketitle
+\setcounter{page}{0}
+\tableofcontents
+\thispagestyle{empty}
+\clearpage
+
+\section*{Introduction}
+
+    Les tempêtes en milieu maritime sont les plus grandes menaces pour les bateaux de tous types. 
+    En effet, une fois pris dans une tempête il est impossible d’en sortir par soi-même. 
+    Les tempêtes représentent la première cause de perte de marchandise en mer allant de simples 
+    pertes de conteneurs mal attachés, au naufrage du bateau en question. 
+    Selon le World Shipping Council, le nombre de conteneurs perdus en mer varie entre 2 600 et 10 000
+    chaque année, c’est à dire entre 7 et 27 par jour et peut-être même plus puisque la déclaration des
+    conteneurs perdus n’est pas obligatoire.\\
+
+
+    Ils y a très peu d’accidents graves de plaisanciers suite à des conditions météorologiques compliquées. Cependant, naviguer dans de bonnes conditions est un confort et bien que certains sites / applications fournissent de très bonnes données, recalculer une trajectoire en prenant en compte ces données se fait souvent manuellement. 
+    Pour une navigation dans de bonnes conditions il est donc impératif d’être bien préparé face aux
+    intempéries et un accès facile tout public à ces informations est nécessaire. De plus, en cas de
+    prévisions météorologiques fausses il est important de pouvoir avertir les autres navigateurs, le plus rapidement possible.\\
+    Voici les principaux phénomènes météorologiques à risques rencontrés en mer :\\
+
+
+    \begin{itemize}
+        \item Le vent ressenti localement à proximité du bateau qui peut avoir pour origine les grandes masses d'air océaniques et continentales (vent synoptique) et/ou une origine locale due au relief et à l'ensoleillement (brise).
+        \item La houle créée par un vent (synoptique), dont on arrive à posséder des informations précises.
+        \item La mer du vent levée par un vent local (comme la brise) qui peut changer brutalement et dont les prévisions sont moins précises.
+        \item Les orages en mer, difficiles à prévoir, apparaissant souvent en fin d'après-midi. Ils sont accompagnés de fortes rafales de vent changeant et de grains réduisant la visibilité.
+        \item La brume (visibilité réduite) qui peut se former rapidement et insidieusement à tout moment du jour et de la nuit au-dessus de la mer.\\
+    \end{itemize}
+
+
+    Existerait-t-il donc un moyen permettant aux navigateurs d’être averti en temps réel des intempéries avec une possibilité de signaler par la même occasion, d’éventuelles prévisions erronées ?\\
+
+    %====================== PLAN A INSÉRER AU FUR ET A MESURE ==========================%
+    Dans un premier temps, nous définirons les différentes données dont nous avons besoin, et quelles sont leurs spécificités.
+
+    \clearpage
+
+%===================== PREMIÈRE PARTIE : DONNÉES ( TITRE À DÉFINIR ) =====================%
+\section{Prévoir les phénomènes météorologiques}
+
+    %----------- Types de données ----------%
+    \subsection{Quelles données faut-il prendre en compte?}
+    
+        %Explication brève du contexte sur la météorologie%
+        Tous les jours, nous utilisons tous des sites comme “Météo France” ou simplement, nous regardons des émissions sur notre télévision pour pouvoir connaître le temps qu’il fera demain et le reste de la semaine. 
+        Ces sites et émissions utilisent la prévision météorologique, un processus mettant en pratique nos connaissances et nos technologies pour nous permettre de prédire les conditions atmosphériques d’un lieu à un moment donné.
+        Ce processus peut sembler complexe mais celui-ci ne comporte que trois étapes \cite{étapes des prévisions} qui peuvent être, elles-même, résumées en trois mots: l’observation, la simulation et la prévision.\\
+        Pour mieux comprendre tout cela nous allons expliquer ces trois étapes:
+        
+        %Les trois étapes d'une prévision météo: Observation -> Simulation -> Prévision%
+        \begin{enumerate}
+            \item La première étape consiste simplement à recueillir et analyser un maximum de données. En effet pour prédire la météo de demain il faut connaître et “comprendre” celle d’aujourd’hui. \\
+            Pour cela, il faut réunir le plus d’informations possibles sur l'atmosphère avec, notamment, la température, la pression atmosphérique, le vent ou encore l’humidité. Toutes ces informations diverses et variées sont collectées par un bon nombre de méthodes.\\ 
+            Toutes sont basées sur l’observation que ça soit au niveau de la mer, du sol, du ciel ou même depuis l’espace. En effet des sites comme Météo France utilisent un réseau de stations de mesures au sols, mais aussi des bouées, des ballons-sondes, des capteurs embarqués sur bateaux et / ou des avions ou encore des satellites \cite{moyens d'obs MétéoFR}.\\ 
+            Des millions de données sont collectées chaque jour, mais seulement une infime partie est réellement utilisée pour modéliser un état initial de l'atmosphère. Collecter ces différentes données requiert d'immenses ressources, alors, des personnes ou entreprises possédant moins de budget préféreront passer par des logiciels intermédiaires regroupant directement ces données pour eux.\\ 
+            Dans notre cas,  dans l’optique d’un rendu informatique, nous utiliserons ce second moyen, que nous expliciterons dans la deuxième partie de ce rapport.\\
+            
+            \item La seconde étape consiste en l’utilisation d’une certaine quantité d’éléments collectés pour simuler l'atmosphère tout en utilisant diverses lois physiques ainsi que des équations pour modéliser son évolution. Ces modèles varient très souvent selon le degré de précision requis afin d’obtenir une prévision plus ou moins lointaine des phénomènes météorologiques de l'espace étudié.
+            Souvent cette précision est caractérisée par une grille verticale et horizontale dont la taille des mailles varie selon la précision voulue, mais aussi en fonction des capacités de calculs disponibles.\\
+            \clearpage
+            La précision du modèle peut également se manifester par des approximations au niveau des équations mathématiques mais aussi au niveau des équations elles-même souvent limitées par la complexité des éléments se situant dans le cadre du problème, ou de l’endroit étudié.\\
+            
+            \item La troisième étape consiste à analyser les différentes informations générées par la simulation. Celles-ci ne sont pas encore des prévisions mais plutôt plusieurs scénarios d’évolutions des différents paramètres météorologiques qui ainsi ont encore besoin d'être expertisés et traduits pour devenir utilisables.
+            Pour expertiser ces résultats complexes les entreprises font souvent appel à un prévisionniste afin qu’il traduise les différents scénarios et données en informations concrètes.\\ 
+            Celles-ci sont ensuite utilisées pour créer les cartes et les bulletins de prévisions adaptés aux utilisateurs. Dans le cas des plus petites entreprises, ces données sont traitées par des algorithmes pour éviter le coût conséquent de l’embauche d’un prévisionniste, cela permet de traduire directement les données et de les implémenter dans une application répondant aux demandes de l’utilisateur.\\
+
+        \end{enumerate}
+    
+    %Transition vers la sous-partie sur l'origine des intempéries%    
+    Quelles données faut-il donc sélectionner? Notre objectif premier étant de gérer les déplacements n’excédant pas une durée de deux semaines, le choix le plus judicieux serait de prendre en compte les informations pouvant influencer le trajet de l’utilisateur, en déduire les différents phénomènes susceptibles de se produire, afin de pouvoir l’en informer, puis pouvoir anticiper en modifiant légèrement sa trajectoire.
+    Nous pouvons donc écarter toute prévision sur une période excédant 7 jours après le départ du navire, dans un soucis de précision mais également de traitement de données.\\
+
+    Cependant, savoir quelles données sont utilisables n’est pas suffisant, nous devons pouvoir exploiter ces informations.
+    Nous devons être capables à partir de tous ces éléments, de pouvoir déterminer une prévision des différents phénomènes à venir; il faut pouvoir définir leur durée, de quels phénomènes il s’agit, ou encore pouvoir déterminer si ces derniers représentent un danger pour l’utilisateur.
+    \clearpage
+    
+    %------------ Origine des "tempêtes" ------------%
+    \subsection{L'origine des différentes intempéries}
+
+        Les tempêtes marines sont un des principaux phénomènes météorologiques pouvant affecter de manière contraignante la navigation maritime.
+        La connaissance des processus de formation de ces phénomènes est essentiel afin de mettre en place des systèmes de prévisions et permettre une navigation sécurisée.
+    \subsubsection{Quelques définitions}
+        Dans un premier temps, il est nécessaire de définir les différents termes météorologiques que nous serons amenés à utiliser. Tout ceci afin de bien comprendre les différents termes utilisés.
+
+        \paragraph{Les dépressions atmosphériques} 
+        
+        "En météorologie, la dépression atmosphérique est une région de l'atmosphère caractérisée par une pression atmosphérique 
+        \footnote{La pression atmosphérique est la force exercée par l'ensemble des molécules présentes dans l'air, elle s'exerce dans toutes les directions et est directement liée à la température et à la densité atmosphérique} 
+        plus basse que celle des régions adjacentes situées à la même altitude" \cite{def depression}.
+        
+        Il existe différentes caractérisations de dépressions atmosphériques (dimensions, formes, mode de formations). Les principales dépressions, pouvant aller de quelques centaines à plusieurs milliers de kilomètres, sont à l'origine de la plupart des tempêtes, et sont réparties en trois catégories principales définies par leurs localisations géographiques (notamment leur latitude).\\
+        C'est ainsi que sont définies les dépressions tropicales et subtropicales, comprises en dessous de la 40° latitude
+        \footnote{Ces zones sont délimitées de façon arbitraire et sont donc approximatives.},
+        les dépressions extra-tropicales ou tempérées, entre la 40° et la 66° latitude, ainsi que les dépressions polaires au delà de la 66° latitude.
+        
+        Si les dépressions ne sont pas dangereuses en tant que tel pour la navigation maritime, elles sont en revanche propices à l'apparition de phénomènes météorologiques d'une grande violence (orages, cyclones).\\
+        
+        Maintenant que nous avons défini ce qu'est dépression atmosphérique, nous sommes à même d'en donner et définir les conséquences.
+        
+        \paragraph{Les principales conséquences des dépressions atmosphériques}
+        Les principales conséquences des dépressions atmosphériques sont les intempéries, les orages, les tempêtes \footnote{Le terme "tempête" est un terme générique pour désigner des conséquences extrêmement violentes d'une dépression} et les cyclones \footnote{Les termes "cyclone", "ouragan" et "typhon" désignent le même phénomène météorologique mais dans des zones géographique différentes. Ainsi nous parlerons d'ouragan dans l'Atlantique et le Pacifique Nord-Ouest, de cyclone dans l'océan Indien et de typhon dans le Pacifique Nord-Est.}
+        
+            
+            
+                
+        \clearpage    
+    %------------ Comment anticiper ces phénomènes -----------%
+    \subsection{Comment prévoir et anticiper ces phénomènes}
+        
+        %Introduction sur l'anticipation des phénomènes météorologiques%
+        Tout d'abord, les tempêtes ne peuvent pas être empêchées il s'agit donc de les anticiper le plus précisément possible afin de pouvoir les éviter avec efficacité.
+    
+    
+    %------------ Comment prévenir l'utilisateur du danger ------------%
+    \subsection{Interaction avec l'utilisateur}    
+
+%======================= LIENS =======================%
+    \clearpage
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+
+    \bibitem{étapes des prévisions}
+    Site de Météo France,\\
+    Étapes des prévisions:\\
+    \url{http://www.meteofrance.fr/prevoir-le-temps/la-prevision-du-temps/les-etapes-de-prevision}\\
+
+    \bibitem{moyens d'obs MétéoFR}
+    Site de Météo France,\\
+    Observer le temps - Les moyens d'observation\\
+    \url{http://www.meteofrance.fr/prevoir-le-temps/observer-le-temps/moyens}\\
+    
+    \bibitem{def depression}
+    Encyclopedia Universalis,\\
+    Définition de DÉPRESSION, météorologie:\\
+    \url{https://www.universalis.fr/encyclopedie/depression-meteorologie/}\\
+
+%LIENS CI-DESSOUS SONT À UTILISER PLUS TARD, LES LABELS SONT À CHANGER + INFOS SUR LA SOURCE%
+    \bibitem{donnees meteo-oceaniques}
+    À MODIFIER : Sources de donnees meteo-oceaniques\\
+    \url{https://archimer.ifremer.fr/doc/1992/rapport-988.pdf}\\
+
+    \bibitem{ressource possible pour carte 1:}
+    À MODIFIER : source possible pour carte 1:\\
+    \url{https://www.bbc.com/weather/map }    \\
+
+    \bibitem{source possible pour carte 2:}
+    À MODIFIER : source possible pour carte 2:\\
+    \url{https://www.ventusky.com/?p=10;-169;1&l=temperature-2m} \\
+
+    \bibitem{openweathermap = map ultra cool mais pas facile :}
+    À MODIFIER : openweathermap = map ultra cool mais pas facile :\\
+    \url{https://home.openweathermap.org/} \\
+    \url{https://openweathermap.org/api/weather-map-2}\\
+
+    \clearpage
+    \thispagestyle{plain}
+
+    \bibitem{source possible pourtempêtes}
+    À MODIFIER : source possible pour tempêtes :\\
+    \url{https://ocean.si.edu/planet-ocean/waves-storms-tsunamis/hurricanes-typhoons-and-cyclones}\\
+
+    \bibitem{data utilisée pour la météo:}
+    À MODIFIER : data utilisée pour la météo:\\
+    \url{https://courses.lumenlearning.com/geophysical/chapter/collecting-weather-data/}\\
+
+\end{thebibliography}
+
+\end{document}
